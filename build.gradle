@@ -33,6 +33,7 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     // queryDSL 설정
     implementation "com.querydsl:querydsl-jpa"
