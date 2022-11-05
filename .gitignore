@@ -47,6 +47,9 @@
 # *.iml
 # *.ipr
 
+### JPA Buddy
+.jpb/
+
 # CMake
 cmake-build-*/
 
