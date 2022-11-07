@@ -3,7 +3,6 @@ package com.example.boardproject.repository;
 import com.example.boardproject.domain.Article;
 import com.example.boardproject.domain.QArticle;
 import com.querydsl.core.types.dsl.DateTimeExpression;
-import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +19,11 @@ public interface ArticleRepository extends
         QuerydslBinderCustomizer<QArticle>
 {
 
-    Page<Article> findByTitle(String title, Pageable pageable);
+    Page<Article> findByTitleContaining(String title, Pageable pageable);
+    Page<Article> findByContentContaining(String content, Pageable pageable);
+    Page<Article> findByUserAccount_UserIdContaining(String userId, Pageable pageable);
+    Page<Article> findByUserAccount_NicknameContaining(String nickname, Pageable pageable);
+    Page<Article> findByHashtag(String hashtag, Pageable pageable);
 
     @Override
     default void customize(QuerydslBindings bindings, QArticle root){
