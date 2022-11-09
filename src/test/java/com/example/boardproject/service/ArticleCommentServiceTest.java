@@ -7,6 +7,7 @@ import com.example.boardproject.dto.ArticleCommentDto;
 import com.example.boardproject.dto.UserAccountDto;
 import com.example.boardproject.repository.ArticleCommentRepository;
 import com.example.boardproject.repository.ArticleRepository;
+import com.example.boardproject.repository.UserAccountRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,6 +34,9 @@ class ArticleCommentServiceTest {
     @Mock
     private ArticleCommentRepository articleCommentRepository;
 
+    @Mock
+    private UserAccountRepository userAccountRepository;
+
     @DisplayName("게시글 ID로 조회하면, 해당하는 댓글 리스트를 반환한다.")
     @Test
     void givenArticleId_whenSearchingArticleComments_thenReturnsArticleComments() {
@@ -58,6 +62,7 @@ class ArticleCommentServiceTest {
         ArticleCommentDto dto = createArticleCommentDto("댓글");
         given(articleRepository.getReferenceById(dto.articleId())).willReturn(createArticle());
         given(articleCommentRepository.save(any(ArticleComment.class))).willReturn(null);
+        given(userAccountRepository.getReferenceById(dto.userAccountDto().userId())).willReturn(null);
 
         // When
         sut.saveArticleComment(dto);
@@ -65,6 +70,7 @@ class ArticleCommentServiceTest {
         // Then
         then(articleRepository).should().getReferenceById(dto.articleId());
         then(articleCommentRepository).should().save(any(ArticleComment.class));
+        then(userAccountRepository).should().getReferenceById(dto.userAccountDto().userId());
     }
 
     @DisplayName("댓글 저장을 시도했는데 맞는 게시글이 없으면, 경고 로그를 찍고 아무것도 안 한다.")
@@ -79,6 +85,7 @@ class ArticleCommentServiceTest {
 
         // Then
         then(articleRepository).should().getReferenceById(dto.articleId());
+        then(userAccountRepository).shouldHaveNoInteractions();
         then(articleCommentRepository).shouldHaveNoInteractions();
     }
 
@@ -133,20 +140,19 @@ class ArticleCommentServiceTest {
 
     private ArticleCommentDto createArticleCommentDto(String content) {
         return ArticleCommentDto.of(
-                1L,
+//                1L,
                 1L,
                 createUserAccountDto(),
-                content,
-                LocalDateTime.now(),
-                "uno",
-                LocalDateTime.now(),
-                "uno"
+                content
+//                LocalDateTime.now(),
+//                "uno",
+//                LocalDateTime.now(),
+//                "uno"
         );
     }
 
     private UserAccountDto createUserAccountDto() {
         return UserAccountDto.of(
-                1L,
                 "uno",
                 "password",
                 "uno@mail.com",
