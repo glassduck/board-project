@@ -4,11 +4,13 @@ import com.example.boardproject.domain.Article;
 import com.example.boardproject.domain.ArticleComment;
 import com.example.boardproject.domain.UserAccount;
 import com.example.boardproject.dto.ArticleCommentDto;
+import com.example.boardproject.dto.security.BoardPrincipal;
 import com.example.boardproject.repository.ArticleCommentRepository;
 import com.example.boardproject.repository.ArticleRepository;
 import com.example.boardproject.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,8 +56,9 @@ public class ArticleCommentService {
         }
     }
 
-    public void deleteArticleComment(Long articleCommentId) {
-        articleCommentRepository.deleteById(articleCommentId);
+    public void deleteArticleComment(Long articleCommentId, String userId) {
+
+        articleCommentRepository.deleteByIdAndUserAccount_UserId(articleCommentId, userId);
     }
 
 }
